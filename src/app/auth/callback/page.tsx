@@ -8,16 +8,21 @@ export default function CallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    (async () => {
-      const { error } = await supabase.auth.getSession();
+    const handleCallback = async () => {
+      // URLからセッションを確定させる（重要）
+      const { error } = await supabase.auth.exchangeCodeForSession(
+        window.location.href
+      );
 
       if (error) {
         router.replace("/login");
         return;
       }
 
-      window.location.href = "/dashboard/profile";
-    })();
+      router.replace("/dashboard/profile");
+    };
+
+    handleCallback();
   }, [router]);
 
   return <p>認証中...</p>;

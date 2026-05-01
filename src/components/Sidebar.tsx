@@ -99,10 +99,24 @@ export default function Sidebar({ onClose }: SidebarProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        router.push("/login");
+        router.refresh(); // ← これも入れると安定
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
   // ログアウト
   const handleLogout = async () => {
     await supabase.auth.signOut();
     onClose?.();
+    router.refresh();
     router.push("/login");
   };
 

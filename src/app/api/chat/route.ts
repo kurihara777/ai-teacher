@@ -118,7 +118,7 @@ ${recentMessages.map((m: Message) => `${m.role}: ${m.content}`).join("\n")}
 `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.1-flash-lite-preview",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
     });
 
